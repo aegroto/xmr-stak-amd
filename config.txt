@@ -1,7 +1,7 @@
 /* 
  * Number of GPUs that you have in your system. Each GPU will get its own CPU thread.
  */
-"gpu_thread_num" : 6,
+"gpu_thread_num" : 1,
 
 /*
  * GPU configuration. You should play around with intensity and worksize as the fastest settings will vary.
@@ -12,11 +12,6 @@
  */
 "gpu_threads_conf" : [ 
 	{ "index" : 0, "intensity" : 1000, "worksize" : 8, "affine_to_cpu" : false },
-	{ "index" : 1, "intensity" : 1000, "worksize" : 8, "affine_to_cpu" : false },
-	{ "index" : 2, "intensity" : 1000, "worksize" : 8, "affine_to_cpu" : false },
-	{ "index" : 3, "intensity" : 1000, "worksize" : 8, "affine_to_cpu" : false },
-	{ "index" : 4, "intensity" : 1000, "worksize" : 8, "affine_to_cpu" : false },
-	{ "index" : 5, "intensity" : 1000, "worksize" : 8, "affine_to_cpu" : false },
 ],
 
 /*

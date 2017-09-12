@@ -207,6 +207,7 @@ char* LoadTextFile(const char* filename)
 
 size_t InitOpenCLGpu(cl_context opencl_ctx, GpuContext* ctx, char* source_code)
 {
+	printer_print_msg("Test OpenCL 0");
 	size_t MaximumWorkSize;
 	cl_int ret;
 
@@ -217,13 +218,15 @@ size_t InitOpenCLGpu(cl_context opencl_ctx, GpuContext* ctx, char* source_code)
 	}
 
 	printer_print_msg("Device %lu work size %lu / %lu.", ctx->deviceIdx, ctx->workSize, MaximumWorkSize);
-#ifdef CL_VERSION_2_0
+/* #ifdef CL_VERSION_2_0
+	printer_print_msg("OpenCL 2.0 detected");
 	const cl_queue_properties CommandQueueProperties[] = { 0, 0, 0 };
-	ctx->CommandQueues = clCreateCommandQueueWithProperties(opencl_ctx, ctx->DeviceID, CommandQueueProperties, &ret);
-#else
+	ctx->CommandQueues = clCreateCommandQueueWithProperties(opencl_ctx, ctx->DeviceID, CommandQueueProperties, &ret);	
+#else */
+	printer_print_msg("Older OpenCL detected");
 	const cl_command_queue_properties CommandQueueProperties = { 0 };
 	ctx->CommandQueues = clCreateCommandQueue(opencl_ctx, ctx->DeviceID, CommandQueueProperties, &ret);
-#endif
+// #endif
 
 	if(ret != CL_SUCCESS)
 	{

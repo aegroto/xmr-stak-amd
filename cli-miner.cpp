@@ -69,6 +69,8 @@ int main(int argc, char *argv[])
 	OpenSSL_add_all_digests();
 #endif
 
+	printer::inst()->print_msg(L0, "Test 0");
+
 	const char* sFilename = "config.txt";
 	bool benchmark_mode = false;
 
@@ -85,15 +87,19 @@ int main(int argc, char *argv[])
 		{
 			sFilename = argv[2];
 		}
+
 		else if(argc >= 3 && strcasecmp(argv[1], "benchmark_mode") == 0)
 		{
+			printer::inst()->print_msg(L0, "Trying to run benchmark");
 			sFilename = argv[2];
-			benchmark_mode = true;
+			benchmark_mode = true;			
 		}
 		else
 			sFilename = argv[1];
 	}
 
+	printer::inst()->print_msg(L0, "Test 1");
+	
 	if(!jconf::inst()->parse_config(sFilename))
 	{
 		win_exit();
@@ -108,6 +114,7 @@ int main(int argc, char *argv[])
 
 	if(benchmark_mode)
 	{
+		printer::inst()->print_msg(L0, "Benchmarking");
 		do_benchmark();
 		win_exit();
 		return 0;

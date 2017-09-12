@@ -1,0 +1,2 @@
+/usr/bin/ar qc libxmr-stak-amd-c.a  CMakeFiles/xmr-stak-amd-c.dir/crypto/c_blake256.c.o CMakeFiles/xmr-stak-amd-c.dir/crypto/c_groestl.c.o CMakeFiles/xmr-stak-amd-c.dir/crypto/c_jh.c.o CMakeFiles/xmr-stak-amd-c.dir/crypto/c_keccak.c.o CMakeFiles/xmr-stak-amd-c.dir/crypto/c_skein.c.o CMakeFiles/xmr-stak-amd-c.dir/crypto/soft_aes.c.o CMakeFiles/xmr-stak-amd-c.dir/amd_gpu/gpu.c.o
+/usr/bin/ranlib libxmr-stak-amd-c.a

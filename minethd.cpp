@@ -165,6 +165,8 @@ bool minethd::init_gpus()
 		vGpuData[i].workSize = cfg.w_size;
 	}
 
+	printer::inst()->print_msg(L0, "Test GPU 0");
+	
 	return InitOpenCL(vGpuData.data(), n, jconf::inst()->GetPlatformIdx()) == ERR_SUCCESS;
 }
 

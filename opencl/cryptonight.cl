@@ -14,6 +14,7 @@
   */
 
 #pragma OPENCL EXTENSION cl_amd_media_ops2 : enable
+#pragma OPENCL EXTENSION cl_clang_storage_class_specifiers : enable
 
 #include "opencl/wolf-aes.cl"
 #include "opencl/wolf-skein.cl"

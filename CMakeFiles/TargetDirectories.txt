@@ -1,0 +1,8 @@
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/install/strip.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/install/local.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/xmr-stak-amd-c.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/install.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/list_install_components.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/xmr-stak-amd.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/edit_cache.dir
+/home/lorenzo/Scrivania/Varie/repo/xmr-stak-amd/CMakeFiles/rebuild_cache.dir
