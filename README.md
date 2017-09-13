@@ -4,7 +4,7 @@ This is a fork of XMR-Stak-AMD. It is really similar to the original miner, but 
 
 Contributions, issues and tips are accepted and encouraged.
 
-#### The rest of this README is inherited from the original repo, check it for updated build instructions and signs.
+#### Always refer to the 'dev' branch for the latest fixes. The rest of this README is inherited from the original repo, check it for updated build instructions and signs.
 
 ### XMR-Stak-AMD - Monero mining software
 
