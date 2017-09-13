@@ -44,25 +44,45 @@ void SkeinMix8(ulong4 *pv0, ulong4 *pv1, const uint rc0, const uint rc1, const u
 	*pv1 ^= *pv0;
 }
 
+ulong4 shuffle_swapFirstLast(ulong4 obj) {
+	return obj.yzwx;
+}
+
+ulong4 shuffle_invert4(ulong4 obj) {
+	return obj.xwzy;
+}
+
+ulong8 shuffle2(ulong4 obj0, ulong4 obj1) {
+	return (ulong8) (
+		 obj0.y, obj1.x,
+		 obj0.z, obj1.w,
+		 obj0.w, obj1.z,
+		 obj0.x, obj1.y);
+}
+
+ulong8 shuffle_invert8(ulong8 obj) {
+	return obj.s12345670;
+}
+
 ulong8 SkeinEvenRound(ulong8 p, const ulong8 h, const ulong *t, const uint s)
 {
 	SKEIN_INJECT_KEY(p, s);
 	ulong4 pv0 = p.even, pv1 = p.odd;
 	
 	SkeinMix8(&pv0, &pv1, 46, 36, 19, 37);
-	pv0 = shuffle(pv0, (ulong4)(1, 2, 3, 0));
-	pv1 = shuffle(pv1, (ulong4)(0, 3, 2, 1));
+	pv0 = shuffle_swapFirstLast(pv0);
+	pv1 = shuffle_invert4(pv1);
 	
 	SkeinMix8(&pv0, &pv1, 33, 27, 14, 42);
-	pv0 = shuffle(pv0, (ulong4)(1, 2, 3, 0));
-	pv1 = shuffle(pv1, (ulong4)(0, 3, 2, 1));
+	pv0 = shuffle_swapFirstLast(pv0);
+	pv1 = shuffle_invert4(pv1);
 	
 	SkeinMix8(&pv0, &pv1, 17, 49, 36, 39);
-	pv0 = shuffle(pv0, (ulong4)(1, 2, 3, 0));
-	pv1 = shuffle(pv1, (ulong4)(0, 3, 2, 1));
+	pv0 = shuffle_swapFirstLast(pv0);
+	pv1 = shuffle_invert4(pv1);
 	
 	SkeinMix8(&pv0, &pv1, 44, 9, 54, 56);
-	return(shuffle2(pv0, pv1, (ulong8)(1, 4, 2, 7, 3, 6, 0, 5)));
+	return(shuffle2(pv0, pv1));
 }
 
 ulong8 SkeinOddRound(ulong8 p, const ulong8 h, const ulong *t, const uint s)
@@ -71,19 +91,19 @@ ulong8 SkeinOddRound(ulong8 p, const ulong8 h, const ulong *t, const uint s)
     ulong4 pv0 = p.even, pv1 = p.odd;
     
 	SkeinMix8(&pv0, &pv1, 39, 30, 34, 24);
-	pv0 = shuffle(pv0, (ulong4)(1, 2, 3, 0));
-	pv1 = shuffle(pv1, (ulong4)(0, 3, 2, 1));
+	pv0 = shuffle_swapFirstLast(pv0);
+	pv1 = shuffle_invert4(pv1);
 	
 	SkeinMix8(&pv0, &pv1, 13, 50, 10, 17);
-	pv0 = shuffle(pv0, (ulong4)(1, 2, 3, 0));
-	pv1 = shuffle(pv1, (ulong4)(0, 3, 2, 1));
+	pv0 = shuffle_swapFirstLast(pv0);
+	pv1 = shuffle_invert4(pv1);
 	
 	SkeinMix8(&pv0, &pv1, 25, 29, 39, 43);
-	pv0 = shuffle(pv0, (ulong4)(1, 2, 3, 0));
-	pv1 = shuffle(pv1, (ulong4)(0, 3, 2, 1));
+	pv0 = shuffle_swapFirstLast(pv0);
+	pv1 = shuffle_invert4(pv1);
 	
 	SkeinMix8(&pv0, &pv1, 8, 35, 56, 22);
-	return(shuffle2(pv0, pv1, (ulong8)(1, 4, 2, 7, 3, 6, 0, 5)));
+	return(shuffle2(pv0, pv1));
 }
 
 ulong8 Skein512Block(ulong8 p, ulong8 h, ulong h8, const ulong *t)
@@ -94,12 +114,12 @@ ulong8 Skein512Block(ulong8 p, ulong8 h, ulong h8, const ulong *t)
 		p = SkeinEvenRound(p, h, t, i);
 		++i;
 		ulong tmp = h.s0;
-		h = shuffle(h, (ulong8)(1, 2, 3, 4, 5, 6, 7, 0));
+		h = shuffle_invert8(h);
 		h.s7 = h8;
 		h8 = tmp;
 		p = SkeinOddRound(p, h, t, i);
 		tmp = h.s0;
-		h = shuffle(h, (ulong8)(1, 2, 3, 4, 5, 6, 7, 0));
+		h = shuffle_invert8(h);
 		h.s7 = h8;
 		h8 = tmp;
 	}

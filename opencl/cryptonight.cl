@@ -13,9 +13,11 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#ifdef cl_amd_media_ops
-#pragma OPENCL EXTENSION cl_amd_media_ops : enable
-#else
+#pragma OPENCL EXTENSION cl_clang_storage_class_specifiers : enable
+
+// #ifdef cl_amd_media_ops
+// #pragma OPENCL EXTENSION cl_amd_media_ops2 : enable
+// #else
 /* taken from https://www.khronos.org/registry/OpenCL/extensions/amd/cl_amd_media_ops.txt
  * Build-in Function
  *     uintn  amd_bitalign (uintn src0, uintn src1, uintn src2)
@@ -33,11 +35,11 @@ inline uint2 amd_bitalign( const uint2 src0, const uint2 src1, const uint src2)
 	result.s1 =  (uint) (((((long)src0.s1) << 32) | (long)src1.s1) >> (src2));
 	return result;
 }
-#endif
+// #endif
 
-#ifdef cl_amd_media_ops2
-#pragma OPENCL EXTENSION cl_amd_media_ops2 : enable
-#else
+// #ifdef cl_amd_media_ops2
+// #pragma OPENCL EXTENSION cl_amd_media_ops2 : enable
+// #else
 /* taken from: https://www.khronos.org/registry/OpenCL/extensions/amd/cl_amd_media_ops2.txt
  *     Built-in Function:
  *     uintn amd_bfe (uintn src0, uintn src1, uintn src2)
@@ -70,7 +72,7 @@ inline int amd_bfe(const uint src0, const uint offset, const uint width)
 
 	return src0 >> offset;
 }
-#endif
+// #endif
 
 #include "opencl/wolf-aes.cl"
 #include "opencl/wolf-skein.cl"
@@ -441,7 +443,7 @@ __kernel void cn0(__global ulong *input, __global uint4 *Scratchpad, __global ul
 	
 	keccakf1600_2(State);
 	
-	mem_fence(CLK_GLOBAL_MEM_FENCE);
+	barrier(CLK_GLOBAL_MEM_FENCE);
 	
 	#pragma unroll
 	for(int i = 0; i < 25; ++i) states[i] = State[i];
@@ -453,7 +455,7 @@ __kernel void cn0(__global ulong *input, __global uint4 *Scratchpad, __global ul
 	
 	AESExpandKey256(ExpandedKey1);
 	
-	mem_fence(CLK_LOCAL_MEM_FENCE);
+	barrier(CLK_LOCAL_MEM_FENCE);
 	
 	#pragma unroll 2
 	for(int i = 0; i < 0x4000; ++i)
@@ -465,7 +467,7 @@ __kernel void cn0(__global ulong *input, __global uint4 *Scratchpad, __global ul
 		Scratchpad[IDX((i << 3) + get_local_id(1))] = text;
 	}
 	
-	mem_fence(CLK_GLOBAL_MEM_FENCE);
+	barrier(CLK_GLOBAL_MEM_FENCE);
 }
 
 __attribute__((reqd_work_group_size(WORKSIZE, 1, 1)))
@@ -494,7 +496,7 @@ __kernel void cn1(__global uint4 *Scratchpad, __global ulong *states)
 	
 	uint4 b_x = ((uint4 *)b)[0];
 	
-	mem_fence(CLK_LOCAL_MEM_FENCE);
+	barrier(CLK_LOCAL_MEM_FENCE);
 	
 	#pragma unroll 8
 	for(int i = 0; i < 0x80000; ++i)
@@ -520,7 +522,7 @@ __kernel void cn1(__global uint4 *Scratchpad, __global ulong *states)
 		b_x = ((uint4 *)c)[0];
 	}
 	
-	mem_fence(CLK_GLOBAL_MEM_FENCE);
+	barrier(CLK_GLOBAL_MEM_FENCE);
 }
 
 __attribute__((reqd_work_group_size(WORKSIZE, 8, 1)))
@@ -599,7 +601,7 @@ __kernel void cn2(__global uint4 *Scratchpad, __global ulong *states, __global u
 		}
 	}
 	
-	mem_fence(CLK_GLOBAL_MEM_FENCE);
+	barrier(CLK_GLOBAL_MEM_FENCE);
 }
 
 /*
@@ -640,7 +642,7 @@ __kernel void cryptonight(__global ulong *input, __global uint4 *Scratchpad, __g
 	AESExpandKey256(ExpandedKey1);
 	AESExpandKey256(ExpandedKey2);
 	
-	mem_fence(CLK_LOCAL_MEM_FENCE);
+	barrier(CLK_LOCAL_MEM_FENCE);
 	
 	Scratchpad += ((1 << 17) * (get_global_id(0) - get_global_offset(0)));
 	
@@ -782,7 +784,7 @@ __kernel void Skein(__global ulong *states, __global uint *BranchBuf, __global u
 	
 	if(as_uint16(p).s7 <= Target) output[atomic_inc(output + 0xFF)] = BranchBuf[idx] + get_global_offset(0);
 	
-	mem_fence(CLK_GLOBAL_MEM_FENCE);	
+	barrier(CLK_GLOBAL_MEM_FENCE);	
 }
 
 #define SWAP8(x)	as_ulong(as_uchar8(x).s76543210)

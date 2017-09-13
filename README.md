@@ -1,3 +1,11 @@
+### Introduction
+
+This is a fork of XMR-Stak-AMD. It is really similar to the original miner, but it is forced to work on OpenCL 1.1 and CL sources are adapted to be compatible with that GL version. It is tested on a RX460 video card, using padoka's Mesa, on the Clover platform. Its source is raw and undocumented, so refer to the original repository if you want a safe, tested miner. I take no responsibility of any harm made to your hardware using this experimental fork and i can't give any warranty for it to work on your PC.
+
+Contributions, issues and tips are accepted and encouraged.
+
+#### The rest of this README is inherited from the original repo, check it for updated build instructions and signs.
+
 ### XMR-Stak-AMD - Monero mining software
 
 XMR-Stak is a universal Stratum pool miner. This is the AMD GPU-mining version; there is also an [CPU version](https://github.com/fireice-uk/xmr-stak-cpu) and an [NVIDA GPU version](https://github.com/fireice-uk/xmr-stak-nvidia)

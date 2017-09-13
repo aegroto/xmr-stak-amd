@@ -217,13 +217,13 @@ size_t InitOpenCLGpu(cl_context opencl_ctx, GpuContext* ctx, char* source_code)
 	}
 
 	printer_print_msg("Device %lu work size %lu / %lu.", ctx->deviceIdx, ctx->workSize, MaximumWorkSize);
-#ifdef CL_VERSION_2_0
+/* #ifdef CL_VERSION_2_0
 	const cl_queue_properties CommandQueueProperties[] = { 0, 0, 0 };
 	ctx->CommandQueues = clCreateCommandQueueWithProperties(opencl_ctx, ctx->DeviceID, CommandQueueProperties, &ret);
-#else
+#else */
 	const cl_command_queue_properties CommandQueueProperties = { 0 };
 	ctx->CommandQueues = clCreateCommandQueue(opencl_ctx, ctx->DeviceID, CommandQueueProperties, &ret);
-#endif
+// #endif
 
 	if(ret != CL_SUCCESS)
 	{
