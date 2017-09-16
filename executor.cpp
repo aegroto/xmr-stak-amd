@@ -473,6 +473,16 @@ void executor::ex_main()
 			push_timed_event(ex_event(EV_HASHRATE_LOOP), jconf::inst()->GetAutohashTime());
 			break;
 
+		case EV_PAUSE:
+			if(paused) {
+				paused = false;
+				printer::inst()->print_msg(L3, "Mining has been resumed");
+			} else {
+				paused = true;
+				printer::inst()->print_msg(L3, "Mining has been paused");
+			}
+
+			break;
 		case EV_INVALID_VAL:
 		default:
 			assert(false);

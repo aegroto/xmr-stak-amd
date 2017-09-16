@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
 	printer::inst()->print_str("'h' - hashrate\n");
 	printer::inst()->print_str("'r' - results\n");
 	printer::inst()->print_str("'c' - connection\n");
+	printer::inst()->print_str("'p' - pause mining\n");
 	printer::inst()->print_str("-------------------------------------------------------------------\n");
 
 	if(strlen(jconf::inst()->GetOutputFile()) != 0)
@@ -156,17 +157,20 @@ int main(int argc, char *argv[])
 
 		switch(key)
 		{
-		case 'h':
-			executor::inst()->push_event(ex_event(EV_USR_HASHRATE));
-			break;
-		case 'r':
-			executor::inst()->push_event(ex_event(EV_USR_RESULTS));
-			break;
-		case 'c':
-			executor::inst()->push_event(ex_event(EV_USR_CONNSTAT));
-			break;
-		default:
-			break;
+            case 'h':
+                executor::inst()->push_event(ex_event(EV_USR_HASHRATE));
+                break;
+            case 'r':
+                executor::inst()->push_event(ex_event(EV_USR_RESULTS));
+                break;
+            case 'c':
+                executor::inst()->push_event(ex_event(EV_USR_CONNSTAT));
+                break;
+            case 'p':
+				executor::inst()->push_event(ex_event(EV_PAUSE));
+				break;
+            default:
+                break;
 		}
 
 		uint64_t currentTime = time_point_cast<milliseconds>(high_resolution_clock::now()).time_since_epoch().count();

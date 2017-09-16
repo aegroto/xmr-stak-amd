@@ -28,9 +28,13 @@ public:
 	inline void push_event(ex_event&& ev) { oEventQ.push(std::move(ev)); }
 	void push_timed_event(ex_event&& ev, size_t sec);
 
+	bool is_paused() { return paused; }
+
 	constexpr static size_t invalid_pool_id = 0;
 	constexpr static size_t dev_pool_id = 1;
 	constexpr static size_t usr_pool_id = 2;
+
+	bool paused = false;
 
 private:
 	struct timed_event

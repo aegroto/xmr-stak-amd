@@ -258,22 +258,23 @@ void minethd::work_main()
 
 		while(iGlobalJobNo.load(std::memory_order_relaxed) == iJobNo)
 		{
-			cl_uint results[0x100] = { 0 };
+			if(!executor::inst()->is_paused()) {
+				cl_uint results[0x100] = { 0 };
+					XMRRunJob(pGpuCtx, results);
 
-			XMRRunJob(pGpuCtx, results);
+				for(size_t i = 0; i < results[0xFF]; i++)
+				{
+					executor::inst()->push_event(ex_event(job_result(oWork.sJobID, oWork.bWorkBlob,
+						oWork.iWorkSize, oWork.iTarget, results[i]), oWork.iPoolId));
+				}
 
-			for(size_t i = 0; i < results[0xFF]; i++)
-			{
-				executor::inst()->push_event(ex_event(job_result(oWork.sJobID, oWork.bWorkBlob,
-					oWork.iWorkSize, oWork.iTarget, results[i]), oWork.iPoolId));
+				iCount += pGpuCtx->rawIntensity;
+				using namespace std::chrono;
+				uint64_t iStamp = time_point_cast<milliseconds>(high_resolution_clock::now()).time_since_epoch().count();
+				iHashCount.store(iCount, std::memory_order_relaxed);
+				iTimestamp.store(iStamp, std::memory_order_relaxed);
+				std::this_thread::yield();
 			}
-
-			iCount += pGpuCtx->rawIntensity;
-			using namespace std::chrono;
-			uint64_t iStamp = time_point_cast<milliseconds>(high_resolution_clock::now()).time_since_epoch().count();
-			iHashCount.store(iCount, std::memory_order_relaxed);
-			iTimestamp.store(iStamp, std::memory_order_relaxed);
-			std::this_thread::yield();
 		}
 
 		consume_work();
